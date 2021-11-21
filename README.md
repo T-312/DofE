@@ -1,1 +1,0 @@
-This repository contains my files, where I am learning to solve math problems in C++ and making projects of medium complexity
