@@ -19,7 +19,7 @@ bool is_prime(int num){
 }
 
 unsigned long long gen_primes(int max_val){
-    unsigned long long sum = 0;
+    unsigned long long sum = 0;    
     for(int i = 1; i < max_val; i+=2){
         if(is_prime(i)){
             sum+=i;
