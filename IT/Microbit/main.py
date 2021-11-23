@@ -8,6 +8,7 @@ def start_radio():
 
 def stop_radio():
     radio.off()
+    exit()
 
 def send_msg(msg):
     radio.send(msg)
