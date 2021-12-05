@@ -1,55 +1,50 @@
-# from microbit import *
-# import radio
-# import time, random
+from microbit import *
+import radio
+import time, random
 
-# def start_radio():
-#     radio.config(channel=10)
-#     radio.on()
+def start_radio():
+    radio.config(channel=10)
+    radio.on()
 
-# def stop_radio():
-#     radio.off()
-#     exit()
+def stop_radio():
+    radio.off()
+    exit()
 
-# def send_msg(msg):
-#     radio.send(msg)
+def send_msg(msg):
+    radio.send(msg)
 
-# def recieved():
-#     incoming = radio.recieve()
-#     if incoming == "next":
-#         print("Next")
+def recieved():
+    incoming = radio.recieve()
+    if incoming == "next":
+        print("Next")
 
-#     if incoming == "prev":
-#         print("Previous")
+    if incoming == "prev":
+        print("Previous")
 
-# def a_pressed():
-#     return button_a.was_pressed()
+def a_pressed():
+    return button_a.was_pressed()
 
-# def b_pressed():
-#     return button_b.was_pressed()
+def b_pressed():
+    return button_b.was_pressed()
 
-# def both_pressed(current_status):
-#     if button_a.is_pressed() and button_b.is_pressed():
-#         if current_status:
-#             stop_radio()
+def both_pressed(current_status):
+    if button_a.is_pressed() and button_b.is_pressed():
+        if current_status:
+            stop_radio()
 
-# def main():
-#     start_radio()
-#     running = True
-#     while running:
-#         if a_pressed():
-#             radio.send("prev")
+def main():
+    start_radio()
+    running = True
+    while running:
+        if a_pressed():
+            radio.send("prev")
 
-#         if b_pressed():
-#             radio.send("next")
+        if b_pressed():
+            radio.send("next")
 
-#         recieved()
-#         both_pressed(running)
-#         time.sleep(1)
+        recieved()
+        both_pressed(running)
+        time.sleep(1)
 
-# if __name__ == "__main__":
-#     main()
-a = [x**2 for x in range(100)]
-nums = [4324,60116,28585,2109]
-for i in range(1000000):
-    if sum(a[:i]) in nums:
-        print(sum(a[:i]))
+if __name__ == "__main__":
+    main()
