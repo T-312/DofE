@@ -16,13 +16,20 @@ class MicroBit:
         radio.off()
         exit()
 
-    def recieved():
+    def pair():
         incoming = radio.receive_full()
         if incoming:
             msg, rssi, timestamp = incoming
-            print("Recieved message")
-            print(msg)
-            return True
+            msg = str(msg, 'utf-8')[3:]
+            if msg == "conn":
+                return True
+
+    def rec_num():
+        incoming = radio.receive_full()
+        if incoming:
+            msg, rssi, timestamp = incoming
+            msg = str(msg, 'utf-8')[-1]
+            return msg
 
     def a_pressed():
         return button_a.was_pressed()
@@ -32,7 +39,6 @@ class MicroBit:
 
     def both_pressed(current_status):
         if button_a.is_pressed() and button_b.is_pressed():
-            print("Buttons A and B was pressed!")
             if current_status:
                 MicroBit.stop_radio()
 
@@ -43,21 +49,39 @@ class MicroBit:
 def main():
     MicroBit.start_radio()
     running = True
+    connected = False
     while running:
         time.sleep(0.5)
         if MicroBit.a_pressed():
-            print("Button A was pressed!")
             radio.send("conn")
 
-        if MicroBit.b_pressed():
-            print("Button B was pressed!")
-            print(MicroBit.gen_rnd_num(1, 7))
+        if MicroBit.pair() and not connected:
+            print("Connected")
+            connected = True
 
-        if MicroBit.recieved():
-            print("Recieved")
+        if MicroBit.b_pressed() and connected:
+            n = str(MicroBit.gen_rnd_num(1, 7))
+            radio.send(n)
 
-        MicroBit.both_pressed(running)
-        
+            recn = MicroBit.rec_num()
+            while recn == None:
+                recn = MicroBit.rec_num()
+            
+            if int(n) > int(recn):
+                print("Microbit 1 won!")
+                display.show(n)
+                display.clear()
+                display.show(Image.HAPPY)
+
+            if int(n) < int(recn):
+                print("Microbit 2 won!")
+                display.show(n)
+                display.clear()
+                display.show(Image.SAD)
+
+            if int(n) == int(recn):
+                print("Draw")
+                print(recn)
 
 if __name__ == "__main__":
     main()
