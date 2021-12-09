@@ -18,27 +18,15 @@ class Shape:
 
     def draw_lines(window, color, points, width):
         pygame.draw.lines(window, color, False, points, width)
-
-def particle(color, x, y, radius, thickness, angle, direction):
-    Shape.draw_circle(WIN, color, x, y, radius, thickness)
-    x+=direction
-    y+=angle
-
-    if x == 700:
-        a = random.randint(0, 1)
-        if a == 0:
-            angle = -2
-
-        if a == 1:
-            angle = 5
-            direction = -5
-    return (angle, direction)
-
+    
 def main():
     running = True
     clock = pygame.time.Clock()
-
+    
+    angle, direction = 0, 5
     x, y = 0, 285
+    current = 0
+    angles = 1
 
     while running:
         clock.tick(FPS)
@@ -50,10 +38,15 @@ def main():
         cover = Shape.draw_circle(WIN, GREEN, 715, 285, 150, 12)
         entrance = Shape.draw_rectangle(WIN, BLACK, 565, 250, 20, 60)
 
-        angle = particle(BLUE, x, y, 20, 20)[0]
-        direction = particle(BLUE, x, y, 20, 20)[1]
-        particle(BLUE, x, y, 20, 20, angle, direction)
-        print(angle)
+        for i in range(3):
+            if x-current >= 700:
+                angle = 2*angles
+                angles+=1
+            Shape.draw_circle(WIN, BLUE, x-current, y+angle, 20, 20)
+            current-=180
+
+        current = 0
+        angle = 0
 
         x+=5
 
