@@ -23,10 +23,13 @@ def main():
     running = True
     clock = pygame.time.Clock()
     
-    angle, direction = 0, 5
-    x, y = 0, 285
+    angle = 0
+    x, y, z = 0, 285, 0
     current = 0
-    angles = 1
+    particle_num = 10
+
+    angles = [1] * particle_num
+    movement = [random.randint(0, 3) for i in range(particle_num+1)]
 
     while running:
         clock.tick(FPS)
@@ -38,17 +41,39 @@ def main():
         cover = Shape.draw_circle(WIN, GREEN, 715, 285, 150, 12)
         entrance = Shape.draw_rectangle(WIN, BLACK, 565, 250, 20, 60)
 
-        for i in range(3):
+        for i in range(particle_num):
             if x-current >= 700:
-                angle = 2*angles
-                angles+=1
-            Shape.draw_circle(WIN, BLUE, x-current, y+angle, 20, 20)
-            current-=180
+                if movement[i] == 0:
+                    angle = 0
+                    angles[i]+=1
+
+                if movement[i] == 1:
+                    angle = 2*angles[i]
+                    angles[i]+=1
+
+                if movement[i] == 2:
+                    angle = -2*angles[i]
+                    angles[i]+=1
+
+                if movement[i] == 3:
+                    angle = 2*angles[i]
+                    angles[i]+=1
+                    Shape.draw_circle(WIN, BLUE, x-z, y+angle, 10, 10)
+
+            # Shape.draw_circle(WIN, BLUE, x-current, y+angle, 10, 10)
+            current-=60
+
+        if x+current >= 900:
+            x, y = 0, 285
+            angles = [1] * particle_num
+            movement = [random.randint(0, 2) for i in range(particle_num+1)]
 
         current = 0
         angle = 0
 
         x+=5
+        if x >= 695:
+            z+=10
 
         pygame.display.update()
         WIN.fill(BLACK)

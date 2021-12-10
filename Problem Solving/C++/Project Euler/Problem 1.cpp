@@ -1,7 +1,5 @@
 #include <iostream>
 
-using namespace std;
-
 int main(){
     int nums[1000] = {};
     int main = 0;
@@ -15,6 +13,6 @@ int main(){
             main+=nums[i]; 
         }
     }
-    cout << main;
+    std::cout << main << std::endl;
     return 0;
 }
