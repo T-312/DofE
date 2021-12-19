@@ -3,8 +3,8 @@ import radio
 import time, random
 
 class MicroBit:
-    def __init__(self, rnd_num):
-        self.rnd_num = rnd_num
+    def __init__(self):
+        self = MicroBit.__init__()
 
     def start_radio():
         print("Starting radio...")
@@ -50,12 +50,13 @@ def main():
     MicroBit.start_radio()
     running = True
     connected = False
+    recn = None
     while running:
-        time.sleep(0.5)
         if MicroBit.a_pressed():
             radio.send("conn")
 
         if MicroBit.pair() and not connected:
+            display.scroll("Connected")
             print("Connected")
             connected = True
 
@@ -63,7 +64,6 @@ def main():
             n = str(MicroBit.gen_rnd_num(1, 7))
             radio.send(n)
 
-            recn = MicroBit.rec_num()
             while recn == None:
                 recn = MicroBit.rec_num()
             
@@ -80,8 +80,12 @@ def main():
                 display.show(Image.SAD)
 
             if int(n) == int(recn):
+                display.show(Image.CONFUSED)
                 print("Draw")
                 print(recn)
+
+            recn = None
+            n = None
 
 if __name__ == "__main__":
     main()
