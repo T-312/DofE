@@ -46,43 +46,55 @@ class MicroBit:
         rnd_num = random.randrange(start_point, end_point)
         return rnd_num
 
+    def draw_wifi():
+        display.show(Image('00000:'
+                           '00009:'
+                           '00090:'
+                           '90900:'
+                           '09000'))
+
+        time.sleep(2)
+        display.clear()
+
 def main():
     MicroBit.start_radio()
     running = True
     connected = False
     recn = None
+
     while running:
         if MicroBit.a_pressed():
             radio.send("conn")
 
         if MicroBit.pair() and not connected:
-            display.scroll("Connected")
-            print("Connected")
+            MicroBit.draw_wifi()
             connected = True
 
         if MicroBit.b_pressed() and connected:
             n = str(MicroBit.gen_rnd_num(1, 7))
             radio.send(n)
+            finished = False
 
             while recn == None:
                 recn = MicroBit.rec_num()
             
-            if int(n) > int(recn):
+            if int(n) > int(recn) and not finished:
                 print("Microbit 1 won!")
-                display.show(n)
                 display.clear()
                 display.show(Image.HAPPY)
+                finished = True
 
-            if int(n) < int(recn):
+            if int(n) < int(recn) and not finished:
                 print("Microbit 2 won!")
-                display.show(n)
                 display.clear()
                 display.show(Image.SAD)
+                finished = True
 
-            if int(n) == int(recn):
+            if int(n) == int(recn) and not finished:
                 display.show(Image.CONFUSED)
                 print("Draw")
                 print(recn)
+                finished = True
 
             recn = None
             n = None
