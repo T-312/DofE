@@ -15,10 +15,8 @@ int factorial(int n){
     for(int i = 0; i < a.length(); i++){
         char c = a[i];
         int ci = c - '0';
-        std::cout << final << std::endl;
         final+=ci;
     }
-    
 
     return final;
 }
