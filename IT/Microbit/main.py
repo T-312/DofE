@@ -68,26 +68,7 @@ def main():
             connected = True
 
         if MicroBit.b_pressed() and connected:
-            n = str(MicroBit.gen_rnd_num(1, 7)) #Send a randomly generated list of 150 numbers, join into a string, receive opponent string(s), zip into list with lists, compare numbers and post reaction
-            radio.send(n)
-
-            while recn is None:
-                recn = MicroBit.rec_num()
-
-            if int(n) > int(recn):
-                print("Microbit 1 won!")
-                display.clear()
-                display.show(Image.HAPPY)
-
-            if int(n) < int(recn):
-                print("Microbit 2 won!")
-                display.clear()
-                display.show(Image.SAD)
-
-            if int(n) == int(recn):
-                display.show(Image.CONFUSED)
-                print("Draw")
-                print(recn)
+            pass
 
 if __name__ == "__main__":
     main()
