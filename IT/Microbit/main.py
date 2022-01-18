@@ -1,3 +1,5 @@
+# Try using this for help: https://microbit-micropython.readthedocs.io/en/v1.0.1/radio.html
+
 from microbit import *
 import radio, threading
 import time, random
@@ -8,7 +10,7 @@ class MicroBit:
 
     def start_radio():
         print("Starting radio...")
-        radio.config(channel=10)
+        radio.config(channel=10, group=0, power=7, data_rate=radio.RATE_2MBIT)
         radio.on()
 
     def stop_radio():
@@ -24,6 +26,8 @@ class MicroBit:
             if msg == "conn":
                 return True
 
+        return False
+
     def rec_num():
         incoming = radio.receive_full()
         if incoming:
@@ -37,67 +41,53 @@ class MicroBit:
     def b_pressed():
         return button_b.was_pressed()
 
-    def both_pressed(current_status):
-        if button_a.is_pressed() and button_b.is_pressed():
-            if current_status:
-                MicroBit.stop_radio()
-
     def gen_rnd_num(start_point, end_point):
-        rnd_num = random.randrange(start_point, end_point)
-        return rnd_num
+        return random.randrange(start_point, end_point)
 
-    def draw_wifi():
+    def connected():
         display.show(Image('00000:'
                            '00009:'
                            '00090:'
                            '90900:'
                            '09000'))
 
-        time.sleep(2)
+        time.sleep(0.5)
         display.clear()
 
 def main():
     MicroBit.start_radio()
     running = True
     connected = False
-    recn = None
 
     while running:
-        if MicroBit.a_pressed():
+        if MicroBit.a_pressed() and not connected:
             radio.send("conn")
 
         if MicroBit.pair() and not connected:
-            MicroBit.draw_wifi()
+            MicroBit.connected()
             connected = True
 
         if MicroBit.b_pressed() and connected:
-            n = str(MicroBit.gen_rnd_num(1, 7))
+            n = str(MicroBit.gen_rnd_num(1, 7)) #Send a randomly generated list of 150 numbers, join into a string, receive opponent string(s), zip into list with lists, compare numbers and post reaction
             radio.send(n)
-            finished = False
 
-            while recn == None:
+            while recn is None:
                 recn = MicroBit.rec_num()
-            
-            if int(n) > int(recn) and not finished:
+
+            if int(n) > int(recn):
                 print("Microbit 1 won!")
                 display.clear()
                 display.show(Image.HAPPY)
-                finished = True
 
-            if int(n) < int(recn) and not finished:
+            if int(n) < int(recn):
                 print("Microbit 2 won!")
                 display.clear()
                 display.show(Image.SAD)
-                finished = True
 
-            if int(n) == int(recn) and not finished:
+            if int(n) == int(recn):
                 display.show(Image.CONFUSED)
                 print("Draw")
                 print(recn)
-                finished = True
-
-            recn = None
-            n = None
 
 if __name__ == "__main__":
     main()
