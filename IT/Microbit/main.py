@@ -1,5 +1,5 @@
 from microbit import *
-import radio
+import radio, threading
 import time, random
 
 class MicroBit:
