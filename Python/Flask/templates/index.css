@@ -1,0 +1,41 @@
+body {
+    background-color: #caf0f8;
+}
+
+header {
+    position: fixed;
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    font-size: x-small;
+    right: 5px;
+}
+
+.logo {
+    width: 80px;
+    float: right;
+    position: sticky;
+}
+
+a {
+    text-decoration: none;
+    background-color: #03045e;
+    color: white;
+    padding: 25px;
+    /* border: 1px solid black; */
+    float: left;
+    position: relative;
+    top: -10px;
+    left: -10px;
+}
+
+a:hover {
+    background-color: #023e8a;
+    color: white;
+}
+
+.last {
+    border-radius: 0px 0px 5px 0px;
+}
